@@ -6,11 +6,21 @@
 
 using namespace std;
 
-#define StudentDataTxFile "../StudentData.txt"
+
+#define PRE_RELEASE
+
+#ifdef PRE_RELEASE
+#define StudentDataTxtFile "../StudentData_Emails.txt"
+#else
+#define StudentDataTxtFile "../StudentData.txt"
+#endif
 
 typedef struct STUDENT_DATA {
 	string firstName; 
 	string lastName;
+#ifdef PRE_RELEASE
+	string email;
+#endif
 };
 
 // reads data from file into vector, if not able to open file returns false, otherwise returns true
@@ -30,6 +40,10 @@ bool readStudentDataFromTxtFile(const string fileName, vector<STUDENT_DATA>& v) 
 		s.lastName = word;			
 		getline(iss, word, ',');// parsed data to get second word: first name 
 		s.firstName = word;
+#ifdef PRE_RELEASE
+		getline(iss, word, ','); // parsed data to get third word: email
+		s.email = word;
+#endif
 		v.push_back(s); // push STUDENT_DATA object s into v
 	}
 	return true;
@@ -39,7 +53,12 @@ bool readStudentDataFromTxtFile(const string fileName, vector<STUDENT_DATA>& v) 
 void printVectorOfStudentData(const vector<STUDENT_DATA> v)
 {
 	for (STUDENT_DATA a : v) {
-		cout << "Last Name: " << a.lastName << "\tFirst Name: " << a.firstName << endl;
+		cout << "Last Name: " << a.lastName << "\tFirst Name: " << a.firstName
+#ifdef PRE_RELEASE
+		<<"\tEmail: "<<a.email
+
+#endif				
+			<< endl;
 	}
 }
 #endif
@@ -47,8 +66,14 @@ void printVectorOfStudentData(const vector<STUDENT_DATA> v)
 
 
 int main() {
+#ifdef PRE_RELEASE 
+	cout << "This application is running on PRE RELEASE!" << endl;
+#else 
+	cout << "This application is running on STANDARD" << endl;
+#endif
 	vector<STUDENT_DATA> v;
-	readStudentDataFromTxtFile(StudentDataTxFile, v);
+	readStudentDataFromTxtFile(StudentDataTxtFile, v);
+
 
 #ifdef _DEBUG  // per Step 4 functionality only used for printing Data which is Debug Mode
 	printVectorOfStudentData(v);
