@@ -35,20 +35,24 @@ bool readStudentDataFromTxtFile(const string fileName, vector<STUDENT_DATA>& v) 
 	return true;
 }
 
-
+#ifdef _DEBUG  // per step 4 functionality only used for printing Data which is Debug Mode
 void printVectorOfStudentData(const vector<STUDENT_DATA> v)
 {
 	for (STUDENT_DATA a : v) {
 		cout << "Last Name: " << a.lastName << "\tFirst Name: " << a.firstName << endl;
 	}
 }
+#endif
 
 
 
 int main() {
 	vector<STUDENT_DATA> v;
 	readStudentDataFromTxtFile(StudentDataTxFile, v);
+
+#ifdef _DEBUG  // per Step 4 functionality only used for printing Data which is Debug Mode
 	printVectorOfStudentData(v);
+#endif
 
 
 }
